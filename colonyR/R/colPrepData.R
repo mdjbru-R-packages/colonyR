@@ -1,18 +1,79 @@
-# from the ColonyUserGuide.pdf and colony2.dat provided with Colony, as
-# downloaded on 2014-09-27
-# @param length_of_runs Give a value of 1, 2, 3, 4 to indicate short, medium,
-#   long, very long run.
-# @param full_likelihood_precision 1/2/3=low/medium/high Precision for
-#   Fulllikelihood 
-# @param monitor_interval interval between records (number of iterations)
+#' @title Prepare data for analysis with Colony
+#'
+#' @description Prepare the input file for a Colony run. Some description of
+#'   the parameters are taken from the ColonyUserGuide.pdf and colony2.dat
+#'   provided with Colony, as downloaded on 2014-09-27.
+#'
 
+#' @details From the pdf manual accompanying Colony: "Update allele frequency:
+#'   Allele frequencies are required in calculating the likelihood of a
+#'   configuration. These frequencies can be provided by the user (see below)
+#'   or are calculated by Colony using the genotypes in OFS, CMS (optional) and
+#'   CFS (optional). In the latter case, you can ask Colony to update allele
+#'   frequency estimates by taking into account of the inferred sibship and
+#'   parentage relationships during the process of searching for the maximum
+#'   likelihood configuration. However, updating allele frequencies could
+#'   increase computational time substantially, and may not improve
+#'   relationship inference much if the genetic structure of your sample is not
+#'   strong (i.e. family sizes small and evenly distributed, most candidates
+#'   are not assigned parentage). I suggest not updating allele frequencies
+#'   except when family sizes (unknown) are suspected to be large (relative to
+#'   sample size) and highly variable."
+#'
+#' @param ids vector giving the offspring ids
+#' @param genotypes data frame with the genotypes. Each row is an individual,
+#'   in the same order as for ids. Each pair of columns represents one locus.
+#' @param dataset_name for Colony output
+#' @param output_file_name prefix used by Colony for the output files
+#' @param random_seed used by Colony
+#' @param update_allele_frequency boolean, if \code{TRUE} Colony will update
+#'   allele frequencies by taking into account of reconstructed pedigrees.
+#' @param inbreeding boolean, absence of presence of inbreeding in Colony
+#'   analysis
+#' @param number_of_runs integer
+#' @param length_of_runs Give a value of 1, 2, 3, 4 to indicate short, medium,
+#'   long, very long run.
+#' @param full_likelihood_precision 1/2/3=low/medium/high Precision for
+#'   Fulllikelihood 
+#' @param monitor_interval interval between records (number of iterations)
+#' @param file file name for the input file produced by this function
+#'
+#' @return Nothing but writes an input file for Colony
+#'
+#' @examples
+#' # (this requires a library with trout data from our group)
+#' library(PKDtroutR)
+#' d = subset(trout, trout$field_trip_number == "september" &
+#'       trout$full_origin == "vainupea")
+#' microsats = c( "Ssosl438_1", "Ssosl438_2", "Ssosl311_1", "Ssosl311_2",
+#'   "Str15inraP_1", "Str15inraP_2", "LG.14_1_1", "LG.14_1_2", "Str543inraP_1",
+#'   "Str543inraP_2", "Ssa197_1", "Ssa197_2", "LG.15_1_1", "LG.15_1_2",
+#'   "Strutta.58_1", "Strutta.58_2", "Str60inra_1", "Str60inra_2", "Str73inra_1",
+#'   "Str73inra_2", "Ssosl417_1", "Ssosl417_2", "Str85inraP_1", "Str85inraP_2",
+#'   "LG.10_2_1", "LG.10_2_2", "Bs131_1", "Bs131_2", "Ssa407_1", "Ssa407_2" )
+#' marker_names = strsplit(microsats[2 * 1:(length(microsats) / 2)], "_")
+#' marker_names = unlist(lapply(marker_names, function(x) x[1]))
+#' d[, c("fish_global_id", microsats)]
+#' ids = d$fish_global_id
+#' genotypes = d[, microsats]
+#' colPrepData(ids, genotypes, marker_names, monitor_interval = 1000,
+#'             length_of_runs = 1)
+#' #run
+#' a = system("colony IFN:colony.input.toto", intern = T)
+#' # load results
+#' r = read.table("colonyFromR.MidResult", header = T, comment.char = "")
+#' plot(r$NumIterate, r$BtLogL, type = "l", col = "cornflowerblue")
+#' lines(r$NumIterate, r$CrLogL, col = "brown")
+#'
+#' @export
+#'
 
 colPrepData = function(ids, genotypes,
   marker_names,
   dataset_name = "colonyFromR",
   output_file_name = "colonyFromR",
   random_seed = 1234,
-  update_allele_frequency = TRUE,
+  update_allele_frequency = FALSE,
   inbreeding = FALSE,
   number_of_runs = 1,
   length_of_runs = 1,

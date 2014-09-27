@@ -2,8 +2,8 @@ Package: colonyR
 Encoding: latin1
 Title: R interface to the colony program
 Description: Colony is a software used for pedigree reconstruction.
-  This is an interface to be able to run colony and parse its output
-  from R.
+    This is an interface to be able to run colony and parse its output
+    from R.
 Version: 0.0.0
 Author: Matthieu Bruneaux <mdjbru@utu.fi>
 Maintainer: Matthieu Bruneaux <mdjbru@utu.fi>
