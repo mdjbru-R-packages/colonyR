@@ -4,7 +4,6 @@
 #'   the parameters are taken from the ColonyUserGuide.pdf and colony2.dat
 #'   provided with Colony, as downloaded on 2014-09-27.
 #'
-
 #' @details From the pdf manual accompanying Colony: "Update allele frequency:
 #'   Allele frequencies are required in calculating the likelihood of a
 #'   configuration. These frequencies can be provided by the user (see below)
@@ -24,6 +23,7 @@
 #' @param genotypes data frame with the genotypes. Each row is an individual,
 #'   in the same order as for ids. Each pair of columns represents one locus.
 #' @param dataset_name for Colony output
+#' @param marker_names a vector of strings with the marker names
 #' @param output_file_name prefix used by Colony for the output files
 #' @param random_seed used by Colony
 #' @param update_allele_frequency boolean, if \code{TRUE} Colony will update

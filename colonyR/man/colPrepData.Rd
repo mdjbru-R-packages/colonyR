@@ -17,6 +17,8 @@ in the same order as for ids. Each pair of columns represents one locus.}
 
 \item{dataset_name}{for Colony output}
 
+\item{marker_names}{a vector of strings with the marker names}
+
 \item{output_file_name}{prefix used by Colony for the output files}
 
 \item{random_seed}{used by Colony}
