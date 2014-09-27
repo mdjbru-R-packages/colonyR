@@ -38,7 +38,8 @@
 #' @param monitor_interval interval between records (number of iterations)
 #' @param file file name for the input file produced by this function
 #'
-#' @return Nothing but writes an input file for Colony
+#' @return A data frame with the correspondence between original ids and
+#'   ids for the Colony run.
 #'
 #' @examples
 #' # (this requires a library with trout data from our group)
@@ -128,11 +129,13 @@ colPrepData = function(ids, genotypes,
     genotypes[is.na(genotypes)] = 0
     g = data.frame(lapply(genotypes, as.character), stringsAsFactors = F)
     for (i in 1:length(ids)) {
-      l = paste(paste0("O_", as.character(ids[i])),
+      l_ids = paste0("O_", as.character(ids[i]))
+      l = paste(l_ids,
         paste(g[i, ], collapse = " "), sep = " ")
       o = paste0(o, l, "\n")
     }
     cat(o, file = f)
+    return(l_ids)
   }
   
   # write to the file
@@ -160,7 +163,7 @@ colPrepData = function(ids, genotypes,
   w(marker_types, "Marker types, 0/1 = codominant/dominant")
   w(allelic_dropout_rate, "Allelic dropout rate")
   w(format(false_allele_rate, scientific = FALSE), "false allele rate")
-  w_genotypes(ids = ids, genotypes = genotypes)
+  new_ids = w_genotypes(ids = ids, genotypes = genotypes)
   w(prob_sire_dam_included, "prob. of dad/mum included in the candidates")
   w(n_candidates_sire_dam, "numbers of candidate males & females")
   w(n_known_paternity, "Number of known paternity")
@@ -174,5 +177,7 @@ colPrepData = function(ids, genotypes,
   
   # close file
   close(f)
-  
+
+  # return the ids
+  return(data.frame(original = ids, colony_id = new_ids))
 }

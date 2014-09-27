@@ -33,6 +33,7 @@
 #' @param full_likelihood_precision 1/2/3=low/medium/high Precision for
 #'   Fulllikelihood 
 #' @param monitor_interval interval between records (number of iterations)
+#' @param save_file boolean, save the results to a file?
 #'
 #' @export
 #'
@@ -45,7 +46,8 @@ colRun = function(ids, genotypes,
   inbreeding = FALSE,
   length_of_runs = 1,
   full_likelihood_precision = 3,
-  monitor_interval = 10000) {
+  monitor_interval = 10000,
+  save_file = FALSE) {
 
   library(uuid)
   temp_dir = UUIDgenerate(use.time = F)
@@ -54,19 +56,19 @@ colRun = function(ids, genotypes,
   dir.create(temp_dir)
   
   # prepare the data
-  colPrepData(ids = ids,
-              genotypes = genotypes,
-              marker_names = marker_names,
-              dataset_name = "colonyFromR",
-              output_file_name = file.path(temp_dir, "colonyFromR"),
-              random_seed = random_seed,
-              update_allele_frequency = update_allele_frequency,
-              inbreeding = inbreeding,
-              number_of_runs = 1,
-              length_of_runs = length_of_runs,
-              full_likelihood_precision = full_likelihood_precision,
-              monitor_interval = monitor_interval,
-              file = file.path(temp_dir, "colony.dat"))
+  id_table = colPrepData(ids = ids,
+    genotypes = genotypes,
+    marker_names = marker_names,
+    dataset_name = "colonyFromR",
+    output_file_name = file.path(temp_dir, "colonyFromR"),
+    random_seed = random_seed,
+    update_allele_frequency = update_allele_frequency,
+    inbreeding = inbreeding,
+    number_of_runs = 1,
+    length_of_runs = length_of_runs,
+    full_likelihood_precision = full_likelihood_precision,
+    monitor_interval = monitor_interval,
+    file = file.path(temp_dir, "colony.dat"))
   
   # run Colony
   system(paste0("colony IFN:", file.path(temp_dir, "colony.dat")), intern = T)
@@ -75,10 +77,22 @@ colRun = function(ids, genotypes,
   d = colParseResults(file = "colonyFromR", dir = temp_dir)
   
   # delete the working directory
-  files = file.list(temp_dir)
+  files = list.files(temp_dir)
   file.remove(file.path(temp_dir, files))
   file.remove(temp_dir)
   
-  # return the data
+  # prepare the results
+  d[["ids"]] = id_table
+  d[["temp_dir"]] = temp_dir
+
+  # save the results if needed
+  if (save_file) {
+    file_out = paste0("colony_run_", temp_dir, ".rda")
+    colony_run_results = d
+    save(colony_run_results, file = file_out)
+    d[["file"]] = file_out
+  }
+
+  # return
   return(d)
 }

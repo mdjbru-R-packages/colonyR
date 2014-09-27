@@ -42,7 +42,8 @@ Fulllikelihood}
 \item{file}{file name for the input file produced by this function}
 }
 \value{
-Nothing but writes an input file for Colony
+A data frame with the correspondence between original ids and
+  ids for the Colony run.
 }
 \description{
 Prepare the input file for a Colony run. Some description of
