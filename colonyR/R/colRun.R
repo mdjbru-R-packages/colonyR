@@ -72,9 +72,13 @@ colRun = function(ids, genotypes,
   system(paste0("colony IFN:", file.path(temp_dir, "colony.dat")), intern = T)
   
   # parse the data
-
-  # delete the working directory
-
-  # return the data
+  d = colParseResults(file = "colonyFromR", dir = temp_dir)
   
+  # delete the working directory
+  files = file.list(temp_dir)
+  file.remove(file.path(temp_dir, files))
+  file.remove(temp_dir)
+  
+  # return the data
+  return(d)
 }
