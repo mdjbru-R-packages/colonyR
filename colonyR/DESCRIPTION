@@ -7,6 +7,8 @@ Description: Colony is a software used for pedigree reconstruction.
 Version: 0.0.0
 Author: Matthieu Bruneaux <mdjbru@utu.fi>
 Maintainer: Matthieu Bruneaux <mdjbru@utu.fi>
+Imports:
+    uuid
 Depends:
     R (>= 3.0.2)
 License: MIT
