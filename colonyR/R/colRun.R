@@ -84,7 +84,10 @@ colRun = function(ids, genotypes,
   # prepare the results
   d[["ids"]] = id_table
   d[["temp_dir"]] = temp_dir
-
+  d[["input_genotypes"]] = genotypes
+  d[["input_markers_names"]] = marker_names
+  d[["input_ids"]] = ids
+  
   # save the results if needed
   if (save_file) {
     file_out = paste0("colony_run_", temp_dir, ".rda")

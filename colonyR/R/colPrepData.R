@@ -128,14 +128,16 @@ colPrepData = function(ids, genotypes,
     o = ""
     genotypes[is.na(genotypes)] = 0
     g = data.frame(lapply(genotypes, as.character), stringsAsFactors = F)
+    l_ids_return = NULL
     for (i in 1:length(ids)) {
       l_ids = paste0("O_", as.character(ids[i]))
       l = paste(l_ids,
         paste(g[i, ], collapse = " "), sep = " ")
       o = paste0(o, l, "\n")
+      l_ids_return = c(l_ids_return, l_ids)
     }
     cat(o, file = f)
-    return(l_ids)
+    return(l_ids_return)
   }
   
   # write to the file
