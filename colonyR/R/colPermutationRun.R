@@ -7,6 +7,8 @@
 #' @param n_cores number of cores to use
 #' @param save_file boolean, if \code{TRUE} one result file is saved for each 
 #'   permutation (usefu to follow the progress and in case of crash)
+#' @param useLocalColonyBinary boolean, use \code{./colony} instead of
+#'   \code{colony}?
 #'
 #' @return A list with the output from \code{\link{colRun}}
 #'
@@ -23,7 +25,8 @@ colPermutationRun = function(ids, genotypes,
   monitor_interval = 10000,
   n_perm = 10,
   n_cores = 1,
-  save_file = FALSE) {
+  save_file = FALSE,
+  useLocalColonyBinary = FALSE) {
 
   # create the permuted genotypes
   permuted_genotypes = list()
@@ -51,7 +54,8 @@ colPermutationRun = function(ids, genotypes,
       length_of_runs = length_of_runs,
       full_likelihood_precision = full_likelihood_precision,
       monitor_interval = monitor_interval,
-      save_file = save_file)
+      save_file = save_file,
+      useLocalColonyBinary = useLocalColonyBinary)
     return(r)
   }
 

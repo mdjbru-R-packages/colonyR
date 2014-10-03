@@ -6,7 +6,7 @@
 colRun(ids, genotypes, marker_names, random_seed = 1234,
   update_allele_frequency = FALSE, inbreeding = FALSE, length_of_runs = 1,
   full_likelihood_precision = 3, monitor_interval = 10000,
-  save_file = FALSE)
+  save_file = FALSE, useLocalColonyBinary = FALSE)
 }
 \arguments{
 \item{ids}{vector giving the offspring ids}
@@ -33,6 +33,9 @@ Fulllikelihood}
 \item{monitor_interval}{interval between records (number of iterations)}
 
 \item{save_file}{boolean, save the results to a file?}
+
+\item{useLocalColonyBinary}{boolean, use \code{./colony} instead of
+  \code{colony}?}
 }
 \description{
 Run a Colony pedigree reconstruction analysis. Some description

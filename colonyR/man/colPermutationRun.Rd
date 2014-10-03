@@ -6,7 +6,7 @@
 colPermutationRun(ids, genotypes, marker_names, random_seed = 1234,
   update_allele_frequency = FALSE, inbreeding = FALSE, length_of_runs = 1,
   full_likelihood_precision = 3, monitor_interval = 10000, n_perm = 10,
-  n_cores = 1, save_file = FALSE)
+  n_cores = 1, save_file = FALSE, useLocalColonyBinary = FALSE)
 }
 \arguments{
 \item{n_perm}{number of permutations to run}
@@ -14,7 +14,10 @@ colPermutationRun(ids, genotypes, marker_names, random_seed = 1234,
 \item{n_cores}{number of cores to use}
 
 \item{save_file}{boolean, if \code{TRUE} one result file is saved for each
-  permutation (usefu to follow the progress and in case of crash)}
+permutation (usefu to follow the progress and in case of crash)}
+
+\item{useLocalColonyBinary}{boolean, use \code{./colony} instead of
+  \code{colony}?}
 }
 \value{
 A list with the output from \code{\link{colRun}}

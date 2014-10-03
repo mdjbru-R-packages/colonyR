@@ -34,6 +34,8 @@
 #'   Fulllikelihood 
 #' @param monitor_interval interval between records (number of iterations)
 #' @param save_file boolean, save the results to a file?
+#' @param useLocalColonyBinary boolean, use \code{./colony} instead of
+#'   \code{colony}?
 #'
 #' @export
 #'
@@ -47,7 +49,8 @@ colRun = function(ids, genotypes,
   length_of_runs = 1,
   full_likelihood_precision = 3,
   monitor_interval = 10000,
-  save_file = FALSE) {
+  save_file = FALSE,
+  useLocalColonyBinary = FALSE) {
 
   library(uuid)
   temp_dir = UUIDgenerate(use.time = F)
@@ -71,7 +74,12 @@ colRun = function(ids, genotypes,
     file = file.path(temp_dir, "colony.dat"))
   
   # run Colony
-  system(paste0("colony IFN:", file.path(temp_dir, "colony.dat")), intern = T)
+  if (!useLocalColonyBinary) {
+    colony_bin = "colony"
+  } else {
+    colony_bin = "./colony"
+  }
+  system(paste0(colony_bin, " IFN:", file.path(temp_dir, "colony.dat")), intern = T)
   
   # parse the data
   d = colParseResults(file = "colonyFromR", dir = temp_dir)
